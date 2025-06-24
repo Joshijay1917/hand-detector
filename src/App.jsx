@@ -68,6 +68,8 @@ function App() {
         console.error('AHK failed:', result.error);
         setstatus("Failed to run mouse script")
         alert('Failed to run mouse script');
+      } else {
+        setstatus("run mouse script")
       }
     requestRef.current = requestAnimationFrame(processFrame);
     return () => cancelAnimationFrame(requestRef.current);
