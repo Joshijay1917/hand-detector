@@ -30,7 +30,7 @@ function App() {
   const canvasRef = useRef(null);
   const requestRef = useRef();
   const fixhand = useRef();
-  let SMOOTHING_WINDOW = 5;
+  let SMOOTHING_WINDOW = 10;
   let lastPosition = null; // Store the last position
   let lastClickTime = 0; // for deference between lastTime and currenTime
 
@@ -147,11 +147,11 @@ function App() {
             const { x, y } = await mapHandToScreen(thumbTip.x, thumbTip.y, video)
 
             if(distance > 50 && middle_distance > 50) {
-              SMOOTHING_WINDOW = 5;
-              console.log("Not smoothing:", SMOOTHING_WINDOW);
+              SMOOTHING_WINDOW = 10;
+              //console.log("Not smoothing:", SMOOTHING_WINDOW);
               sendCursorPosition(x, y, validatedHands);
             } else {
-              console.log("smoothing:", SMOOTHING_WINDOW);
+              //console.log("smoothing:", SMOOTHING_WINDOW);
               SMOOTHING_WINDOW = 15;
               sendCursorPosition(x, y, validatedHands);
             }
@@ -335,7 +335,8 @@ function App() {
     try {
       // For Electron environment
       if (window.screen) {
-        const { width, height } = await window.electronAPI.screen.getPrimaryDisplay()
+        const { width, height } = await window.electronAPI.screen.getPrimaryDisplay();
+        console.log("Dimension:", {width, height})
         return { width, height };
       }
       // For browser development fallback
