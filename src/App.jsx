@@ -335,7 +335,9 @@ function App() {
     try {
       // For Electron environment
       if (window.screen) {
-        const { width, height } = await window.electronAPI.screen.getPrimaryDisplay();
+        //const { width, height } = await window.electronAPI.screen.getPrimaryDisplay();
+        const width = window.screen.width;
+        const height = window.screen.height;
         console.log("Dimension:", {width, height})
         return { width, height };
       }
