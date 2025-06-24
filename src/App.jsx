@@ -63,6 +63,12 @@ function App() {
   // 2. Start Processing
   useEffect(() => {
     setstatus("Model loaded")
+     const result = await window.electronAPI.runMouseScript();
+      if (!result.success) {
+        console.error('AHK failed:', result.error);
+        setstatus("Failed to run mouse script")
+        alert('Failed to run mouse script');
+      }
     requestRef.current = requestAnimationFrame(processFrame);
     return () => cancelAnimationFrame(requestRef.current);
   }, [detector]);
