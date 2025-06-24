@@ -383,6 +383,12 @@ function App() {
     const clickSound = document.getElementById('clickSound');
     clickSound.currentTime = 0; // Rewind to start (allows rapid playback)
     clickSound.play().catch(e => console.log("Audio play failed:", e));
+    if(window.electronAPI){
+      window.electronAPI.onPlaySound((path) => {
+        const audio = new Audio(path);
+        audio.play();
+      });
+    }
   }
 
   // 10(Optional). If hand disappear than send cursor to center
