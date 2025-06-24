@@ -23,14 +23,14 @@ function App() {
   const [status, setstatus] = useState(null)
   const [hands, setHands] = useState([]);
   const positionHistory = [];
-  const SMOOTHING_WINDOW = 10;
   const MOVEMENT_THRESHOLD = 300; // Maximum allowed movement in pixels (if exceeded, don't move)
-  const CLICK_COOLDOWN = 3000; // 3s between allowed clicks
+  const CLICK_COOLDOWN = 2000; // 2s between allowed clicks
   const pinchThreshold = 20;
   const webcamRef = useRef(null);
   const canvasRef = useRef(null);
   const requestRef = useRef();
   const fixhand = useRef();
+  let SMOOTHING_WINDOW = 5;
   let lastPosition = null; // Store the last position
   let lastClickTime = 0; // for deference between lastTime and currenTime
 
@@ -62,7 +62,7 @@ function App() {
 
   // 2. Start Processing
   useEffect(() => {
-    setstatus("Model loaded")
+    setstatus("Model loading")
      const result = await window.electronAPI.runMouseScript();
       if (!result.success) {
         console.error('AHK failed:', result.error);
@@ -132,28 +132,39 @@ function App() {
       }));
 
       // STEP 5: Update state and clean up
-      setHands(validatedHands);
       if (validatedHands.length > 0) {
         console.log("Valid Hands");
         
         const wrist = validatedHands[0].keypoints.find(kp => kp.name === 'index_finger_tip');
         const thumbTip = validatedHands[0].keypoints.find(kp => kp.name === 'thumb_tip'); // Thumb tip
+        const middleTip = validatedHands[0].keypoints.find(kp => kp.name === 'middle_finger_tip');
 
         if (wrist && wrist.score >= 0.5) {
-
-          if (fixhand.current) {
-            setLoading(false)
-            const { x, y } = await mapHandToScreen(thumbTip.x, thumbTip.y, video)
-
-            console.log("handPOs:", { x, y });
-
-            sendCursorPosition(x, y, validatedHands);
-          }
 
           const distance = Math.sqrt(
             Math.pow(thumbTip.x - wrist.x, 2) +
             Math.pow(thumbTip.y - wrist.y, 2)
           );
+          
+          const middle_distance = Math.sqrt(
+            Math.pow(middleTip.x - thumbTip.x, 2) +
+            Math.pow(middleTip.y - thumbTip.y, 2)
+          );
+          
+          if (fixhand.current) {
+            setLoading(false)
+            const { x, y } = await mapHandToScreen(thumbTip.x, thumbTip.y, video)
+
+            if(distance > 50 && middle_distance > 50) {
+              SMOOTHING_WINDOW = 5;
+              console.log("Not smoothing:", SMOOTHING_WINDOW);
+              sendCursorPosition(x, y, validatedHands);
+            } else {
+              console.log("smoothing:", SMOOTHING_WINDOW);
+              SMOOTHING_WINDOW = 15;
+              sendCursorPosition(x, y, validatedHands);
+            }
+          }
 
           // Detect pinch gesture
           if (distance < pinchThreshold) {
@@ -165,7 +176,7 @@ function App() {
             setIsPinching(false);
           }
 
-          setHandPosition({ x: wrist.x, y: wrist.y });
+          setHandPosition({ x: thumbTip.x, y: thumbTip.y });
           setHandVisible(true);
           // sendCursorPosition(679, 388, validatedHands);
         } else {
@@ -371,8 +382,13 @@ function App() {
 
   // 8. Trigger right click
   const handleRightClick = () => {
-    if (window.electron) {
-      window.electron.ipcRenderer.send('right-click');
+   const now = Date.now();
+    if (now - lastClickTime < CLICK_COOLDOWN) return;
+
+    if (window.electronAPI) {
+      lastClickTime = now;
+      playClickSound();
+      window.electronAPI.ipcRenderer.send('right-click');
     } else {
       // Browser fallback
       const el = document.elementFromPoint(handX, handY);
