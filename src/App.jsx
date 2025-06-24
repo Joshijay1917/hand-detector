@@ -69,6 +69,7 @@ function App() {
         setstatus("Failed to run mouse script")
         alert('Failed to run mouse script');
       } else {
+        console.log("mouse script runned")
         setstatus("run mouse script")
       }
     requestRef.current = requestAnimationFrame(processFrame);
