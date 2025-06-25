@@ -423,9 +423,11 @@ function App() {
     if (handVisible) {
       if (handPosition) {
         console.log("SetTimeout")
+        //send = true;
         setTimeout(() => {
+          console.log("1s Complete")
           send = true
-      }, 2000);
+      }, 1000);
         fixhand.current = {
           x: handPosition.x,
           y: handPosition.y
