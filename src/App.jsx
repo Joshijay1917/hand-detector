@@ -402,7 +402,7 @@ function App() {
         //const event = new MouseEvent('contextmenu', {
          // bubbles: true,
          // clientX: handX,
-         / clientY: handY
+         // clientY: handY
         //});
        // el.dispatchEvent(event);
       //}
