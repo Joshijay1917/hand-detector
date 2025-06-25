@@ -148,14 +148,16 @@ function App() {
             setLoading(false)
             const { x, y } = await mapHandToScreen(thumbTip.x, thumbTip.y, video)
 
-            if(distance > 50 && middle_distance > 50 && send) {
+            if(distance > 50 && middle_distance > 50) {
               SMOOTHING_WINDOW = 11 - SMOOTHER;
               //console.log("Not smoothing:", SMOOTHING_WINDOW);
-              sendCursorPosition(x, y, validatedHands);
+              if(send)
+              sendCursorPosition(-x, y, validatedHands);
             } else {
               //console.log("smoothing:", SMOOTHING_WINDOW);
               SMOOTHING_WINDOW = 14 + SMOOTHER;
-              sendCursorPosition(x, y, validatedHands);
+              if(send)
+              sendCursorPosition(-x, y, validatedHands);
             }
           }
 
