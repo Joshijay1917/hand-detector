@@ -149,7 +149,7 @@ function App() {
             setLoading(false)
 
             if(distance > 75 && middle_distance > 75) {
-              SMOOTHING_WINDOW = 2 - SMOOTHER;
+              SMOOTHING_WINDOW = 6 - SMOOTHER;
             } else if(distance > 40 && middle_distance > 40){
               SMOOTHING_WINDOW = 15 - SMOOTHER;
               //console.log("Not smoothing:", send);
