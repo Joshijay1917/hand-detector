@@ -430,7 +430,7 @@ function App() {
       }
     } else {
       // When hand disappears, move cursor to (640,388) and deactivate
-      send = false;
+      setSend(false);
       if (window.electronAPI) {
         window.electronAPI.sendCursorPosition(640, 388);
       }
