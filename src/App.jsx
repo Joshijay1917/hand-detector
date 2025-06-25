@@ -154,7 +154,7 @@ function App() {
               //console.log("Not smoothing:", send);
             } else {
               //console.log("smoothing:", send);
-              SMOOTHING_WINDOW = 5 + SMOOTHER;
+              SMOOTHING_WINDOW = 15 + SMOOTHER;
             }
             sendCursorPosition(x, y, validatedHands);
           }
