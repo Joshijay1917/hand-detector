@@ -151,6 +151,7 @@ function App() {
             setLoading(false)
 
             if (distance > 80 && middle_distance > 80) {
+              console.log("distance:",distance)
   // Stage 1: Very far – fast movement, minimal smoothing
   SMOOTHING_WINDOW.current = 2 - SMOOTHER;
   HORIZONTAL_BOOST_FACTOR.current = 3.0;
