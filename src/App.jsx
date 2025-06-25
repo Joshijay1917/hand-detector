@@ -156,7 +156,7 @@ function App() {
               //console.log("smoothing:", send);
               SMOOTHING_WINDOW = 14 + SMOOTHER;
             }
-            sendCursorPosition(x, y, validatedHands);
+            sendCursorPosition(-x, y, validatedHands);
           }
 
           // Detect pinch gesture
