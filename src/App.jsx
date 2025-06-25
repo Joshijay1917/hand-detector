@@ -152,12 +152,12 @@ function App() {
             if(distance > 75 && middle_distance > 75) {
               SMOOTHING_WINDOW = 2 - SMOOTHER;
             } else if(distance > 55 && middle_distance > 55){
-              SMOOTHING_WINDOW = 15 - SMOOTHER;
+              SMOOTHING_WINDOW = 12 - SMOOTHER;
               //console.log("Not smoothing:", send);
             }
             else {
               //console.log("smoothing:", send);
-              SMOOTHING_WINDOW = 30 + SMOOTHER;
+              SMOOTHING_WINDOW = 25 + SMOOTHER;
             }
             sendCursorPosition(x, y, validatedHands);
           }
