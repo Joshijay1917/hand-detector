@@ -367,9 +367,7 @@ function App() {
   // 6. Send cursor position to electron
   const sendCursorPosition = useCallback((x, y) => {
   if (window.electronAPI) {
-    if(send){
-      window.electronAPI.sendCursorPosition(x, y);
-    }
+    window.electronAPI.sendCursorPosition(x, y);
   } else {
     //console.log('[IPC Simulated] move-cursor', { x, y });
   }
