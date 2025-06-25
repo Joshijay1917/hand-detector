@@ -290,8 +290,8 @@ function App() {
         const centerY = 0.5;
         return {
           //x: centerX + (x - centerX) * HORIZONTAL_BOOST_FACTOR,
-          x: centerX + (centerX - x) * HORIZONTAL_BOOST_FACTOR,
-          y: centerY + (y - centerY) * VERTICAL_BOOST_FACTOR
+          x: centerX + (centerX - x) * HORIZONTAL_BOOST_FACTOR.current,
+          y: centerY + (y - centerY) * VERTICAL_BOOST_FACTOR.current
         };
       }
 
