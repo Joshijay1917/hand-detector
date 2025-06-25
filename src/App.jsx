@@ -150,16 +150,12 @@ function App() {
 
             if(distance > 50 && middle_distance > 50) {
               SMOOTHING_WINDOW = 11 - SMOOTHER;
-              //console.log("Not smoothing:", SMOOTHING_WINDOW);
-              if(send){
+              console.log("Not smoothing:", send);
               sendCursorPosition(x, y, validatedHands);
-              }
             } else {
-              //console.log("smoothing:", SMOOTHING_WINDOW);
+              console.log("smoothing:", send);
               SMOOTHING_WINDOW = 14 + SMOOTHER;
-              if(send){
               sendCursorPosition(x, y, validatedHands);
-              }
             }
           }
 
@@ -366,7 +362,7 @@ function App() {
 
   // 6. Send cursor position to electron
   const sendCursorPosition = async (x, y) => {
-    if (window.electronAPI) {
+    if (window.electronAPI && send) {
       window.electronAPI.sendCursorPosition(x, y);
     } else {
       console.log('[IPC Simulated] move-cursor', { x, y });
