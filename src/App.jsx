@@ -25,7 +25,7 @@ function App() {
   const [SMOOTHER, setSMOOTHER] = useState(1)
   const positionHistory = [];
   const MOVEMENT_THRESHOLD = 300; // Maximum allowed movement in pixels (if exceeded, don't move)
-  const CLICK_COOLDOWN = 2000; // 2s between allowed clicks
+  const CLICK_COOLDOWN = 1000; // 2s between allowed clicks
   const pinchThreshold = 20;
   const sendRef = useRef(false);
   const webcamRef = useRef(null);
@@ -34,7 +34,8 @@ function App() {
   const fixhand = useRef();
   let SMOOTHING_WINDOW = 10;
   let lastPosition = null; // Store the last position
-  let lastClickTime = 0; // for deference between lastTime and currenTime
+  let lastClickTimeL = 0; // for deference between lastTime and currenTime
+  let lastClickTimeR = 0; // for deference between lastTime and currenTime
 
   // 1. Laods Model
   useEffect(() => {
@@ -151,12 +152,11 @@ function App() {
             if(distance > 50 && middle_distance > 50) {
               SMOOTHING_WINDOW = 11 - SMOOTHER;
               //console.log("Not smoothing:", send);
-              sendCursorPosition(x, y, validatedHands);
             } else {
               //console.log("smoothing:", send);
               SMOOTHING_WINDOW = 14 + SMOOTHER;
-              sendCursorPosition(x, y, validatedHands);
             }
+            sendCursorPosition(x, y, validatedHands);
           }
 
           // Detect pinch gesture
@@ -373,10 +373,10 @@ function App() {
   // 7. Trigger left click
   const handleLeftClick = () => {
     const now = Date.now();
-    if (now - lastClickTime < CLICK_COOLDOWN) return;
+    if (now - lastClickTimeL < CLICK_COOLDOWN) return;
 
     if (window.electronAPI) {
-      lastClickTime = now;
+      lastClickTimeL = now;
       playClickSound();
       window.electronAPI.ipcRenderer.send('left-click');
     } else {
@@ -389,10 +389,10 @@ function App() {
   // 8. Trigger right click
   const handleRightClick = () => {
    const now = Date.now();
-    if (now - lastClickTime < CLICK_COOLDOWN) return;
+    if (now - lastClickTimeR < CLICK_COOLDOWN) return;
 
     if (window.electronAPI) {
-      lastClickTime = now;
+      lastClickTimeR = now;
       playClickSound();
       window.electronAPI.ipcRenderer.send('right-click');
     } else {
@@ -423,9 +423,9 @@ function App() {
     if (handVisible) {
       if (handPosition) {
         timeoutId = setTimeout(() => {
-          console.log("3s Complete");
+          console.log("1s Complete");
           sendRef.current = true;
-      }, 3000);
+      }, 1000);
         fixhand.current = {
           x: handPosition.x,
           y: handPosition.y
