@@ -62,10 +62,6 @@ function App() {
     return () => detector?.dispose();
   }, []);
 
-  useEffect(() => {
-    console.log("Send change:", send);
-  }, [send])
-
   // 2. Start Processing
   useEffect(() => {
     setstatus("Model loading")
@@ -365,16 +361,19 @@ function App() {
   };
 
   // 6. Send cursor position to electron
-  const sendCursorPosition = (x, y) => {
-    console.log("Inside Function send=",send)
-    if(send){
+   useEffect(() => {
+    console.log("Send change:", send);
+     if(send){
       if (window.electronAPI) {
         window.electronAPI.sendCursorPosition(x, y);
       } else {
         //console.log('[IPC Simulated] move-cursor', { x, y });
       }
     }
-}
+  }, [send])
+  const sendCursorPosition = (x, y) => {
+    onsole.log("Inside Function send=",send)
+  }
 
   // 7. Trigger left click
   const handleLeftClick = () => {
