@@ -62,6 +62,10 @@ function App() {
     return () => detector?.dispose();
   }, []);
 
+  useEffect(() => {
+    console.log("Send change:", send);
+  }, [send])
+
   // 2. Start Processing
   useEffect(() => {
     setstatus("Model loading")
@@ -150,10 +154,10 @@ function App() {
 
             if(distance > 50 && middle_distance > 50) {
               SMOOTHING_WINDOW = 11 - SMOOTHER;
-              console.log("Not smoothing:", send);
+              //console.log("Not smoothing:", send);
               sendCursorPosition(x, y, validatedHands);
             } else {
-              console.log("smoothing:", send);
+              //console.log("smoothing:", send);
               SMOOTHING_WINDOW = 14 + SMOOTHER;
               sendCursorPosition(x, y, validatedHands);
             }
@@ -365,7 +369,7 @@ function App() {
   if (window.electronAPI && send) {
     window.electronAPI.sendCursorPosition(x, y);
   } else {
-    console.log('[IPC Simulated] move-cursor', { x, y });
+    //console.log('[IPC Simulated] move-cursor', { x, y });
   }
 }, [send]);
 
