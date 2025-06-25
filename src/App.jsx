@@ -23,6 +23,7 @@ function App() {
   const [status, setstatus] = useState(null)
   const [hands, setHands] = useState([]);
   const [SMOOTHER, setSMOOTHER] = useState(1)
+  const [send, setSend] = useState(false);
   const positionHistory = [];
   const MOVEMENT_THRESHOLD = 300; // Maximum allowed movement in pixels (if exceeded, don't move)
   const CLICK_COOLDOWN = 2000; // 2s between allowed clicks
@@ -32,7 +33,6 @@ function App() {
   const requestRef = useRef();
   const fixhand = useRef();
   let SMOOTHING_WINDOW = 10;
-  let send = false;
   let lastPosition = null; // Store the last position
   let lastClickTime = 0; // for deference between lastTime and currenTime
 
@@ -421,7 +421,7 @@ function App() {
       if (handPosition) {
         setTimeout(() => {
           console.log("3s Complete");
-          send = true;
+          setSend(true);
       }, 3000);
         fixhand.current = {
           x: handPosition.x,
