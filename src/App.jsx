@@ -151,13 +151,15 @@ function App() {
             if(distance > 50 && middle_distance > 50) {
               SMOOTHING_WINDOW = 11 - SMOOTHER;
               //console.log("Not smoothing:", SMOOTHING_WINDOW);
-              if(send)
-              sendCursorPosition(-x, y, validatedHands);
+              if(send){
+              sendCursorPosition(x, y, validatedHands);
+              }
             } else {
               //console.log("smoothing:", SMOOTHING_WINDOW);
               SMOOTHING_WINDOW = 14 + SMOOTHER;
-              if(send)
-              sendCursorPosition(-x, y, validatedHands);
+              if(send){
+              sendCursorPosition(x, y, validatedHands);
+              }
             }
           }
 
@@ -419,22 +421,18 @@ function App() {
 
   // 10(Optional). If hand disappear than send cursor to center
   useEffect(() => {
-    console.log("Hand Appear")
     if (handVisible) {
       if (handPosition) {
-        console.log("SetTimeout")
-        //send = true;
         setTimeout(() => {
-          console.log("1s Complete")
-          send = true
-      }, 1000);
+          console.log("3s Complete");
+          send = true;
+      }, 3000);
         fixhand.current = {
           x: handPosition.x,
           y: handPosition.y
         };
       }
     } else {
-      console.log("Hand Disappear")
       // When hand disappears, move cursor to (640,388) and deactivate
       send = false;
       if (window.electronAPI) {
