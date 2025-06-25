@@ -32,9 +32,9 @@ function App() {
   const canvasRef = useRef(null);
   const requestRef = useRef();
   const fixhand = useRef();
-  let HORIZONTAL_BOOST_FACTOR = 5.0; // 2x horizontal sensitivity in active zone
-  let VERTICAL_BOOST_FACTOR = 8.0; // 3x vertical sensitivity in active zone
-  let SMOOTHING_WINDOW = 10;
+  let HORIZONTAL_BOOST_FACTOR = useRef(5.0); // 2x horizontal sensitivity in active zone
+  let VERTICAL_BOOST_FACTOR = useRef(8.0); // 3x vertical sensitivity in active zone
+  let SMOOTHING_WINDOW = useRef(10);
   let lastPosition = null; // Store the last position
   let lastClickTimeL = 0; // for deference between lastTime and currenTime
   let lastClickTimeR = 0; // for deference between lastTime and currenTime
@@ -152,29 +152,29 @@ function App() {
 
             if (distance > 80 && middle_distance > 80) {
   // Stage 1: Very far – fast movement, minimal smoothing
-  SMOOTHING_WINDOW = 2 - SMOOTHER;
-  HORIZONTAL_BOOST_FACTOR = 3.0;
-  VERTICAL_BOOST_FACTOR = 5.0;
+  SMOOTHING_WINDOW.current = 2 - SMOOTHER;
+  HORIZONTAL_BOOST_FACTOR.current = 3.0;
+  VERTICAL_BOOST_FACTOR.current = 5.0;
 } else if (distance > 60 && middle_distance > 60) {
   // Stage 2: Far – quick movement, low smoothing
-  SMOOTHING_WINDOW = 4 - SMOOTHER;
-  HORIZONTAL_BOOST_FACTOR = 2.5;
-  VERTICAL_BOOST_FACTOR = 4.0;
+  SMOOTHING_WINDOW.current = 4 - SMOOTHER;
+  HORIZONTAL_BOOST_FACTOR.current = 2.5;
+  VERTICAL_BOOST_FACTOR.current = 4.0;
 } else if (distance > 45 && middle_distance > 45) {
   // Stage 3: Medium – balanced speed and smoothing
-  SMOOTHING_WINDOW = 8 - SMOOTHER;
-  HORIZONTAL_BOOST_FACTOR = 1.8;
-  VERTICAL_BOOST_FACTOR = 3.0;
+  SMOOTHING_WINDOW.current = 8 - SMOOTHER;
+  HORIZONTAL_BOOST_FACTOR.current = 1.8;
+  VERTICAL_BOOST_FACTOR.current = 3.0;
 } else if (distance > 30 && middle_distance > 30) {
   // Stage 4: Close – slower movement, more smoothing
-  SMOOTHING_WINDOW = 15 + SMOOTHER;
-  HORIZONTAL_BOOST_FACTOR = 1.2;
-  VERTICAL_BOOST_FACTOR = 1.5;
+  SMOOTHING_WINDOW.current = 15 + SMOOTHER;
+  HORIZONTAL_BOOST_FACTOR.current = 1.2;
+  VERTICAL_BOOST_FACTOR.current = 1.5;
 } else {
   // Stage 5: Very close – very smooth, low sensitivity (likely to click)
-  SMOOTHING_WINDOW = 25 + SMOOTHER;
-  HORIZONTAL_BOOST_FACTOR = 0.8;
-  VERTICAL_BOOST_FACTOR = 0.8;
+  SMOOTHING_WINDOW.current = 25 + SMOOTHER;
+  HORIZONTAL_BOOST_FACTOR.current = 0.8;
+  VERTICAL_BOOST_FACTOR.current = 0.8;
 }
 
             const { x, y } = await mapHandToScreen(wrist.x, wrist.y, video)
