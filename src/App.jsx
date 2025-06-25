@@ -22,6 +22,7 @@ function App() {
   const [handVisible, setHandVisible] = useState(false);
   const [status, setstatus] = useState(null)
   const [hands, setHands] = useState([]);
+  const [SMOOTHER, setSMOOTHER] = useState(1)
   const positionHistory = [];
   const MOVEMENT_THRESHOLD = 300; // Maximum allowed movement in pixels (if exceeded, don't move)
   const CLICK_COOLDOWN = 2000; // 2s between allowed clicks
@@ -31,6 +32,7 @@ function App() {
   const requestRef = useRef();
   const fixhand = useRef();
   let SMOOTHING_WINDOW = 10;
+  let send = false;
   let lastPosition = null; // Store the last position
   let lastClickTime = 0; // for deference between lastTime and currenTime
 
@@ -146,13 +148,13 @@ function App() {
             setLoading(false)
             const { x, y } = await mapHandToScreen(thumbTip.x, thumbTip.y, video)
 
-            if(distance > 50 && middle_distance > 50) {
-              SMOOTHING_WINDOW = 10;
+            if(distance > 50 && middle_distance > 50 && send) {
+              SMOOTHING_WINDOW = 11 - SMOOTHER;
               //console.log("Not smoothing:", SMOOTHING_WINDOW);
               sendCursorPosition(x, y, validatedHands);
             } else {
               //console.log("smoothing:", SMOOTHING_WINDOW);
-              SMOOTHING_WINDOW = 15;
+              SMOOTHING_WINDOW = 14 + SMOOTHER;
               sendCursorPosition(x, y, validatedHands);
             }
           }
@@ -167,7 +169,16 @@ function App() {
             setIsPinching(false);
           }
 
-          setHandPosition({ x: thumbTip.x, y: thumbTip.y });
+          if (middle_distance < pinchThreshold) {
+            if (!isPinching) {
+              handleRightClick(); // Trigger click on pinch start
+              setIsPinching(true);
+            }
+          } else {
+            setIsPinching(false);
+          }
+
+          setHandPosition({ x: wrist.x, y: wrist.y });
           setHandVisible(true);
           // sendCursorPosition(679, 388, validatedHands);
         } else {
@@ -408,6 +419,9 @@ function App() {
   useEffect(() => {
     if (handVisible) {
       if (handPosition) {
+        setTimeout(() => {
+          send = true
+      }, 2000);
         fixhand.current = {
           x: handPosition.x,
           y: handPosition.y
@@ -415,6 +429,7 @@ function App() {
       }
     } else {
       // When hand disappears, move cursor to (640,388) and deactivate
+      send = false;
       if (window.electronAPI) {
         window.electronAPI.sendCursorPosition(640, 388);
       }
@@ -433,6 +448,19 @@ function App() {
       }}>
         hide window
       </button>
+      <div style={{display: 'flex', flexDirection: 'column', fontWeight: 'bold', gap: '2px'}}>
+        <p>Smoothness :</p>
+      <button onClick={() => {
+        setSMOOTHER(SMOOTHER+1)
+      }}>
+        +
+      </button>
+      <button onClick={() => {
+        setSMOOTHER(SMOOTHER-1)
+      }}>
+        -
+      </button>
+      </div>
       {/* Movable div that follows your hand */}
       <div
         style={{
