@@ -423,7 +423,7 @@ function App() {
       if (handPosition) {
         setTimeout(() => {
           send = true
-      }, 10000);
+      }, 2000);
         fixhand.current = {
           x: handPosition.x,
           y: handPosition.y
