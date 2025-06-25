@@ -251,10 +251,10 @@ function App() {
     const normalizedY = clampedY / videoNativeHeight;
 
     // Zone configuration
-    const ACTIVE_ZONE_THICKNESS = 0.001; // 1% thick active area (very small)
+    const ACTIVE_ZONE_THICKNESS = 0.001; // 0.1% thick active area (very small)
     const HORIZONTAL_BOOST_FACTOR = 5.0; // 2x horizontal sensitivity in active zone
-    const VERTICAL_BOOST_FACTOR = 7.0; // 3x vertical sensitivity in active zone
-    const OUTER_SENSITIVITY = 0.01; // 50% sensitivity in outer area
+    const VERTICAL_BOOST_FACTOR = 8.0; // 3x vertical sensitivity in active zone
+    const OUTER_SENSITIVITY = 0.01; // 1% sensitivity in outer area
 
     const mapCoordinates = (x, y) => {
       // Calculate active zone boundaries
