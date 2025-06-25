@@ -23,12 +23,11 @@ function App() {
   const [status, setstatus] = useState(null)
   const [hands, setHands] = useState([]);
   const [SMOOTHER, setSMOOTHER] = useState(1)
-  const [send, setSend] = useState(false);
   const positionHistory = [];
   const MOVEMENT_THRESHOLD = 300; // Maximum allowed movement in pixels (if exceeded, don't move)
   const CLICK_COOLDOWN = 2000; // 2s between allowed clicks
   const pinchThreshold = 20;
-  const sendRef = useRef(send);
+  const sendRef = useRef(false);
   const webcamRef = useRef(null);
   const canvasRef = useRef(null);
   const requestRef = useRef();
