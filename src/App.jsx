@@ -126,7 +126,7 @@ function App() {
 
       // STEP 5: Update state and clean up
       if (validatedHands.length > 0) {
-        console.log("Valid Hands");
+        //console.log("Valid Hands");
         
         const wrist = validatedHands[0].keypoints.find(kp => kp.name === 'index_finger_tip');
         const thumbTip = validatedHands[0].keypoints.find(kp => kp.name === 'thumb_tip'); // Thumb tip
@@ -351,7 +351,7 @@ function App() {
         //const { width, height } = await window.electronAPI.screen.getPrimaryDisplay();
         const width = window.screen.width;
         const height = window.screen.height;
-        console.log("Dimension:", {width, height})
+        //console.log("Dimension:", {width, height})
         return { width, height };
       }
       // For browser development fallback
@@ -419,8 +419,10 @@ function App() {
 
   // 10(Optional). If hand disappear than send cursor to center
   useEffect(() => {
+    console.log("Hand Appear")
     if (handVisible) {
       if (handPosition) {
+        console.log("SetTimeout")
         setTimeout(() => {
           send = true
       }, 2000);
@@ -430,6 +432,7 @@ function App() {
         };
       }
     } else {
+      console.log("Hand Disappear")
       // When hand disappears, move cursor to (640,388) and deactivate
       send = false;
       if (window.electronAPI) {
