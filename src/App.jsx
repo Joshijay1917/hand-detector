@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react'
+import { useState, useRef, useEffect, useCallback } from 'react'
 import Webcam from 'react-webcam'
 import { ErrorBoundary } from 'react-error-boundary'
 import * as tf from '@tensorflow/tfjs';
@@ -361,13 +361,13 @@ function App() {
   };
 
   // 6. Send cursor position to electron
-  const sendCursorPosition = async (x, y) => {
-    if (window.electronAPI && send) {
-      window.electronAPI.sendCursorPosition(x, y);
-    } else {
-      console.log('[IPC Simulated] move-cursor', { x, y });
-    }
-  };
+  const sendCursorPosition = useCallback((x, y) => {
+  if (window.electronAPI && send) {
+    window.electronAPI.sendCursorPosition(x, y);
+  } else {
+    console.log('[IPC Simulated] move-cursor', { x, y });
+  }
+}, [send]);
 
   // 7. Trigger left click
   const handleLeftClick = () => {
