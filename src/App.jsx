@@ -28,6 +28,7 @@ function App() {
   const MOVEMENT_THRESHOLD = 300; // Maximum allowed movement in pixels (if exceeded, don't move)
   const CLICK_COOLDOWN = 2000; // 2s between allowed clicks
   const pinchThreshold = 20;
+  const sendRef = useRef(send);
   const webcamRef = useRef(null);
   const canvasRef = useRef(null);
   const requestRef = useRef();
@@ -361,18 +362,13 @@ function App() {
   };
 
   // 6. Send cursor position to electron
-   useEffect(() => {
-    console.log("Send change:", send);
-     if(send){
-      if (window.electronAPI) {
+  const sendCursorPosition = (x, y) => {
+    console.log("Inside Function send=",sendRef.current)
+    if (window.electronAPI && sendRef.current) {
         window.electronAPI.sendCursorPosition(x, y);
       } else {
         //console.log('[IPC Simulated] move-cursor', { x, y });
       }
-    }
-  }, [send])
-  const sendCursorPosition = (x, y) => {
-    console.log("Inside Function send=",send)
   }
 
   // 7. Trigger left click
@@ -429,7 +425,7 @@ function App() {
       if (handPosition) {
         timeoutId = setTimeout(() => {
           console.log("3s Complete");
-          setSend(true);
+          sendRef.current = true;
       }, 3000);
         fixhand.current = {
           x: handPosition.x,
@@ -439,7 +435,7 @@ function App() {
     } else {
       // When hand disappears, move cursor to (640,388) and deactivate
       if (timeoutId) clearTimeout(timeoutId);
-      setSend(false);
+      sendRef.current = false;
       if (window.electronAPI) {
         window.electronAPI.sendCursorPosition(640, 388);
       }
