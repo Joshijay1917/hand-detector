@@ -421,7 +421,7 @@ function App() {
       if (handPosition) {
         setTimeout(() => {
           send = true
-      }, 2000);
+      }, 10000);
         fixhand.current = {
           x: handPosition.x,
           y: handPosition.y
@@ -450,12 +450,12 @@ function App() {
       </button>
       <div style={{display: 'flex', flexDirection: 'column', fontWeight: 'bold', gap: '2px'}}>
         <p>Smoothness :</p>
-      <button onClick={() => {
+      <button style={{width: '50px'}} onClick={() => {
         setSMOOTHER(SMOOTHER+1)
       }}>
         +
       </button>
-      <button onClick={() => {
+      <button style={{width: '50px'}} onClick={() => {
         setSMOOTHER(SMOOTHER-1)
       }}>
         -
