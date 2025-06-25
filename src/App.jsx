@@ -365,13 +365,16 @@ function App() {
   };
 
   // 6. Send cursor position to electron
-  const sendCursorPosition = useCallback((x, y) => {
-  if (window.electronAPI) {
-    window.electronAPI.sendCursorPosition(x, y);
-  } else {
-    //console.log('[IPC Simulated] move-cursor', { x, y });
-  }
-}, [send]);
+  const sendCursorPosition = (x, y) => {
+    console.log("Inside Function send=",send)
+    if(send){
+      if (window.electronAPI) {
+        window.electronAPI.sendCursorPosition(x, y);
+      } else {
+        //console.log('[IPC Simulated] move-cursor', { x, y });
+      }
+    }
+}
 
   // 7. Trigger left click
   const handleLeftClick = () => {
