@@ -381,8 +381,8 @@ function App() {
       window.electronAPI.ipcRenderer.send('left-click');
     } else {
       // Fallback for browser testing
-      const el = document.elementFromPoint(handX, handY);
-      if (el) el.click();
+      //const el = document.elementFromPoint(handX, handY);
+      //if (el) el.click();
     }
   };
 
@@ -397,15 +397,15 @@ function App() {
       window.electronAPI.ipcRenderer.send('right-click');
     } else {
       // Browser fallback
-      const el = document.elementFromPoint(handX, handY);
-      if (el) {
-        const event = new MouseEvent('contextmenu', {
-          bubbles: true,
-          clientX: handX,
-          clientY: handY
-        });
-        el.dispatchEvent(event);
-      }
+      //const el = document.elementFromPoint(handX, handY);
+      //if (el) {
+        //const event = new MouseEvent('contextmenu', {
+         // bubbles: true,
+         // clientX: handX,
+         / clientY: handY
+        //});
+       // el.dispatchEvent(event);
+      //}
     }
   };
 
