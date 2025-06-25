@@ -32,6 +32,8 @@ function App() {
   const canvasRef = useRef(null);
   const requestRef = useRef();
   const fixhand = useRef();
+  let HORIZONTAL_BOOST_FACTOR = 5.0; // 2x horizontal sensitivity in active zone
+  let VERTICAL_BOOST_FACTOR = 8.0; // 3x vertical sensitivity in active zone
   let SMOOTHING_WINDOW = 10;
   let lastPosition = null; // Store the last position
   let lastClickTimeL = 0; // for deference between lastTime and currenTime
@@ -150,13 +152,19 @@ function App() {
 
             if(distance > 75 && middle_distance > 75) {
               SMOOTHING_WINDOW = 6 - SMOOTHER;
+              HORIZONTAL_BOOST_FACTOR = 5.0; // 2x horizontal sensitivity in active zone
+              VERTICAL_BOOST_FACTOR = 8.0; // 3x vertical sensitivity in active zone
             } else if(distance > 40 && middle_distance > 40){
               SMOOTHING_WINDOW = 15 - SMOOTHER;
+              HORIZONTAL_BOOST_FACTOR = 3.0; // 2x horizontal sensitivity in active zone
+              VERTICAL_BOOST_FACTOR = 5.0; // 3x vertical sensitivity in active zone
               //console.log("Not smoothing:", send);
             }
             else {
               //console.log("smoothing:", send);
               SMOOTHING_WINDOW = 23 + SMOOTHER;
+              HORIZONTAL_BOOST_FACTOR = 1.0; // 2x horizontal sensitivity in active zone
+              VERTICAL_BOOST_FACTOR = 3.0; // 3x vertical sensitivity in active zone
             }
             const { x, y } = await mapHandToScreen(wrist.x, wrist.y, video)
             sendCursorPosition(x, y, validatedHands);
@@ -252,8 +260,8 @@ function App() {
 
     // Zone configuration
     const ACTIVE_ZONE_THICKNESS = 0.001; // 0.1% thick active area (very small)
-    const HORIZONTAL_BOOST_FACTOR = 5.0; // 2x horizontal sensitivity in active zone
-    const VERTICAL_BOOST_FACTOR = 8.0; // 3x vertical sensitivity in active zone
+    HORIZONTAL_BOOST_FACTOR = 5.0; // 2x horizontal sensitivity in active zone
+    VERTICAL_BOOST_FACTOR = 8.0; // 3x vertical sensitivity in active zone
     const OUTER_SENSITIVITY = 0.01; // 1% sensitivity in outer area
 
     const mapCoordinates = (x, y) => {
