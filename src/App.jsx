@@ -154,8 +154,8 @@ function App() {
               console.log("distance:",distance)
   // Stage 1: Very far – fast movement, minimal smoothing
   SMOOTHING_WINDOW.current = 2 - SMOOTHER;
-  HORIZONTAL_BOOST_FACTOR.current = 3.0;
-  VERTICAL_BOOST_FACTOR.current = 5.0;
+  HORIZONTAL_BOOST_FACTOR.current = 5.0;
+  VERTICAL_BOOST_FACTOR.current = 8.0;
 } else if (distance > 60 && middle_distance > 60) {
   // Stage 2: Far – quick movement, low smoothing
   SMOOTHING_WINDOW.current = 4 - SMOOTHER;
