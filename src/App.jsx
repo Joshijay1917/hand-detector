@@ -375,7 +375,7 @@ function App() {
     const now = Date.now();
     if (now - lastClickTimeL < CLICK_COOLDOWN) return;
 
-    if (window.electronAPI) {
+    if (window.electronAPI && sendRef.current) {
       lastClickTimeL = now;
       playClickSound();
       window.electronAPI.ipcRenderer.send('left-click');
@@ -391,7 +391,7 @@ function App() {
    const now = Date.now();
     if (now - lastClickTimeR < CLICK_COOLDOWN) return;
 
-    if (window.electronAPI) {
+    if (window.electronAPI && sendRef.current) {
       lastClickTimeR = now;
       playClickSound();
       window.electronAPI.ipcRenderer.send('right-click');
