@@ -26,7 +26,7 @@ function App() {
   const positionHistory = [];
   const MOVEMENT_THRESHOLD = 300; // Maximum allowed movement in pixels (if exceeded, don't move)
   const CLICK_COOLDOWN = 1000; // 2s between allowed clicks
-  const pinchThreshold = 13;
+  const pinchThreshold = 17;
   const sendRef = useRef(false);
   const webcamRef = useRef(null);
   const canvasRef = useRef(null);
@@ -152,12 +152,12 @@ function App() {
             if(distance > 75 && middle_distance > 75) {
               SMOOTHING_WINDOW = 2 - SMOOTHER;
             } else if(distance > 55 && middle_distance > 55){
-              SMOOTHING_WINDOW = 12 - SMOOTHER;
+              SMOOTHING_WINDOW = 9 - SMOOTHER;
               //console.log("Not smoothing:", send);
             }
             else {
               //console.log("smoothing:", send);
-              SMOOTHING_WINDOW = 25 + SMOOTHER;
+              SMOOTHING_WINDOW = 23 + SMOOTHER;
             }
             sendCursorPosition(x, y, validatedHands);
           }
