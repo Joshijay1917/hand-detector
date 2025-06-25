@@ -26,7 +26,7 @@ function App() {
   const positionHistory = [];
   const MOVEMENT_THRESHOLD = 300; // Maximum allowed movement in pixels (if exceeded, don't move)
   const CLICK_COOLDOWN = 1000; // 2s between allowed clicks
-  const pinchThreshold = 17;
+  const pinchThreshold = 19;
   const sendRef = useRef(false);
   const webcamRef = useRef(null);
   const canvasRef = useRef(null);
