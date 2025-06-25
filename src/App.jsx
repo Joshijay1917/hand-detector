@@ -152,19 +152,19 @@ function App() {
 
             if(distance > 75 && middle_distance > 75) {
               SMOOTHING_WINDOW = 6 - SMOOTHER;
-              HORIZONTAL_BOOST_FACTOR = 5.0; // 2x horizontal sensitivity in active zone
-              VERTICAL_BOOST_FACTOR = 8.0; // 3x vertical sensitivity in active zone
+              HORIZONTAL_BOOST_FACTOR = 3.0; // 2x horizontal sensitivity in active zone
+              VERTICAL_BOOST_FACTOR = 6.0; // 3x vertical sensitivity in active zone
             } else if(distance > 40 && middle_distance > 40){
               SMOOTHING_WINDOW = 15 - SMOOTHER;
-              HORIZONTAL_BOOST_FACTOR = 3.0; // 2x horizontal sensitivity in active zone
-              VERTICAL_BOOST_FACTOR = 5.0; // 3x vertical sensitivity in active zone
+              HORIZONTAL_BOOST_FACTOR = 1.0; // 2x horizontal sensitivity in active zone
+              VERTICAL_BOOST_FACTOR = 3.0; // 3x vertical sensitivity in active zone
               //console.log("Not smoothing:", send);
             }
             else {
               //console.log("smoothing:", send);
               SMOOTHING_WINDOW = 23 + SMOOTHER;
               HORIZONTAL_BOOST_FACTOR = 1.0; // 2x horizontal sensitivity in active zone
-              VERTICAL_BOOST_FACTOR = 3.0; // 3x vertical sensitivity in active zone
+              VERTICAL_BOOST_FACTOR = 1.0; // 3x vertical sensitivity in active zone
             }
             const { x, y } = await mapHandToScreen(wrist.x, wrist.y, video)
             sendCursorPosition(x, y, validatedHands);
