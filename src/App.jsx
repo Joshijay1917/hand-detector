@@ -150,22 +150,33 @@ function App() {
           if (fixhand.current) {
             setLoading(false)
 
-            if(distance > 75 && middle_distance > 75) {
-              SMOOTHING_WINDOW = 6 - SMOOTHER;
-              HORIZONTAL_BOOST_FACTOR = 3.0; // 2x horizontal sensitivity in active zone
-              VERTICAL_BOOST_FACTOR = 6.0; // 3x vertical sensitivity in active zone
-            } else if(distance > 40 && middle_distance > 40){
-              SMOOTHING_WINDOW = 15 - SMOOTHER;
-              HORIZONTAL_BOOST_FACTOR = 1.0; // 2x horizontal sensitivity in active zone
-              VERTICAL_BOOST_FACTOR = 3.0; // 3x vertical sensitivity in active zone
-              //console.log("Not smoothing:", send);
-            }
-            else {
-              //console.log("smoothing:", send);
-              SMOOTHING_WINDOW = 23 + SMOOTHER;
-              HORIZONTAL_BOOST_FACTOR = 1.0; // 2x horizontal sensitivity in active zone
-              VERTICAL_BOOST_FACTOR = 1.0; // 3x vertical sensitivity in active zone
-            }
+            if (distance > 80 && middle_distance > 80) {
+  // Stage 1: Very far – fast movement, minimal smoothing
+  SMOOTHING_WINDOW = 2 - SMOOTHER;
+  HORIZONTAL_BOOST_FACTOR = 3.0;
+  VERTICAL_BOOST_FACTOR = 5.0;
+} else if (distance > 60 && middle_distance > 60) {
+  // Stage 2: Far – quick movement, low smoothing
+  SMOOTHING_WINDOW = 4 - SMOOTHER;
+  HORIZONTAL_BOOST_FACTOR = 2.5;
+  VERTICAL_BOOST_FACTOR = 4.0;
+} else if (distance > 45 && middle_distance > 45) {
+  // Stage 3: Medium – balanced speed and smoothing
+  SMOOTHING_WINDOW = 8 - SMOOTHER;
+  HORIZONTAL_BOOST_FACTOR = 1.8;
+  VERTICAL_BOOST_FACTOR = 3.0;
+} else if (distance > 30 && middle_distance > 30) {
+  // Stage 4: Close – slower movement, more smoothing
+  SMOOTHING_WINDOW = 15 + SMOOTHER;
+  HORIZONTAL_BOOST_FACTOR = 1.2;
+  VERTICAL_BOOST_FACTOR = 1.5;
+} else {
+  // Stage 5: Very close – very smooth, low sensitivity (likely to click)
+  SMOOTHING_WINDOW = 25 + SMOOTHER;
+  HORIZONTAL_BOOST_FACTOR = 0.8;
+  VERTICAL_BOOST_FACTOR = 0.8;
+}
+
             const { x, y } = await mapHandToScreen(wrist.x, wrist.y, video)
             sendCursorPosition(x, y, validatedHands);
           }
