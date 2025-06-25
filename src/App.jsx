@@ -372,7 +372,7 @@ function App() {
     }
   }, [send])
   const sendCursorPosition = (x, y) => {
-    onsole.log("Inside Function send=",send)
+    console.log("Inside Function send=",send)
   }
 
   // 7. Trigger left click
