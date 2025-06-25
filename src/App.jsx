@@ -417,9 +417,11 @@ function App() {
 
   // 10(Optional). If hand disappear than send cursor to center
   useEffect(() => {
+    let timeoutId;
+    
     if (handVisible) {
       if (handPosition) {
-        setTimeout(() => {
+        timeoutId = setTimeout(() => {
           console.log("3s Complete");
           setSend(true);
       }, 3000);
@@ -430,11 +432,16 @@ function App() {
       }
     } else {
       // When hand disappears, move cursor to (640,388) and deactivate
+      if (timeoutId) clearTimeout(timeoutId);
       setSend(false);
       if (window.electronAPI) {
         window.electronAPI.sendCursorPosition(640, 388);
       }
     }
+
+    return () => {
+      if (timeoutId) clearTimeout(timeoutId);
+    };
   }, [handVisible])
 
   return (
