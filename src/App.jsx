@@ -249,8 +249,8 @@ function App() {
 
     // Zone configuration
     const ACTIVE_ZONE_THICKNESS = 0.001; // 1% thick active area (very small)
-    const HORIZONTAL_BOOST_FACTOR = 2.0; // 2x horizontal sensitivity in active zone
-    const VERTICAL_BOOST_FACTOR = 3.0; // 3x vertical sensitivity in active zone
+    const HORIZONTAL_BOOST_FACTOR = 4.0; // 2x horizontal sensitivity in active zone
+    const VERTICAL_BOOST_FACTOR = 5.0; // 3x vertical sensitivity in active zone
     const OUTER_SENSITIVITY = 0.01; // 50% sensitivity in outer area
 
     const mapCoordinates = (x, y) => {
