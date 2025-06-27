@@ -450,7 +450,6 @@ function App() {
   return (
     <div style={{ position: 'relative', width: '640px', height: '480px' }}>
       <audio id="clickSound" src="click.wav" preload="auto"></audio>
-      </div>
       {/* Movable div that follows your hand */}
       <div
         style={{
