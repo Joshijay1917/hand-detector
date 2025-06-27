@@ -148,7 +148,7 @@ function App() {
           if (fixhand.current) {
             setLoading(false)
 
-            if(distance > 50 && middle_distance > 50 && send) {
+            if(distance > 50 && middle_distance > 50 && sendRef.current) {
               SMOOTHING_WINDOW = 6 - SMOOTHER;
               //console.log("Not smoothing:", SMOOTHING_WINDOW);
             } else {
