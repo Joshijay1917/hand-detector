@@ -32,9 +32,7 @@ function App() {
   const canvasRef = useRef(null);
   const requestRef = useRef();
   const fixhand = useRef();
-  let HORIZONTAL_BOOST_FACTOR = useRef(5.0); // 2x horizontal sensitivity in active zone
-  let VERTICAL_BOOST_FACTOR = useRef(8.0); // 3x vertical sensitivity in active zone
-  let SMOOTHING_WINDOW = useRef(10);
+  let SMOOTHING_WINDOW = 10;
   let lastPosition = null; // Store the last position
   let lastClickTimeL = 0; // for deference between lastTime and currenTime
   let lastClickTimeR = 0; // for deference between lastTime and currenTime
@@ -150,33 +148,13 @@ function App() {
           if (fixhand.current) {
             setLoading(false)
 
-            if (distance > 80 && middle_distance > 80) {
-              console.log("distance:",distance)
-  // Stage 1: Very far – fast movement, minimal smoothing
-  SMOOTHING_WINDOW.current = 2 - SMOOTHER;
-  HORIZONTAL_BOOST_FACTOR.current = 5.0;
-  VERTICAL_BOOST_FACTOR.current = 8.0;
-} else if (distance > 60 && middle_distance > 60) {
-  // Stage 2: Far – quick movement, low smoothing
-  SMOOTHING_WINDOW.current = 4 - SMOOTHER;
-  HORIZONTAL_BOOST_FACTOR.current = 2.5;
-  VERTICAL_BOOST_FACTOR.current = 4.0;
-} else if (distance > 45 && middle_distance > 45) {
-  // Stage 3: Medium – balanced speed and smoothing
-  SMOOTHING_WINDOW.current = 8 - SMOOTHER;
-  HORIZONTAL_BOOST_FACTOR.current = 1.8;
-  VERTICAL_BOOST_FACTOR.current = 3.0;
-} else if (distance > 30 && middle_distance > 30) {
-  // Stage 4: Close – slower movement, more smoothing
-  SMOOTHING_WINDOW.current = 15 + SMOOTHER;
-  HORIZONTAL_BOOST_FACTOR.current = 1.2;
-  VERTICAL_BOOST_FACTOR.current = 1.5;
-} else {
-  // Stage 5: Very close – very smooth, low sensitivity (likely to click)
-  SMOOTHING_WINDOW.current = 25 + SMOOTHER;
-  HORIZONTAL_BOOST_FACTOR.current = 0.8;
-  VERTICAL_BOOST_FACTOR.current = 0.8;
-}
+            if(distance > 50 && middle_distance > 50 && send) {
+              SMOOTHING_WINDOW = 6 - SMOOTHER;
+              //console.log("Not smoothing:", SMOOTHING_WINDOW);
+            } else {
+              //console.log("smoothing:", SMOOTHING_WINDOW);
+              SMOOTHING_WINDOW = 14 + SMOOTHER;
+            }
 
             const { x, y } = await mapHandToScreen(wrist.x, wrist.y, video)
             sendCursorPosition(x, y, validatedHands);
@@ -272,8 +250,8 @@ function App() {
 
     // Zone configuration
     const ACTIVE_ZONE_THICKNESS = 0.001; // 0.1% thick active area (very small)
-    //HORIZONTAL_BOOST_FACTOR = 5.0; // 2x horizontal sensitivity in active zone
-    //VERTICAL_BOOST_FACTOR = 8.0; // 3x vertical sensitivity in active zone
+    const HORIZONTAL_BOOST_FACTOR = 5.0; // 2x horizontal sensitivity in active zone
+    const VERTICAL_BOOST_FACTOR = 8.0; // 3x vertical sensitivity in active zone
     const OUTER_SENSITIVITY = 0.01; // 1% sensitivity in outer area
 
     const mapCoordinates = (x, y) => {
@@ -291,8 +269,8 @@ function App() {
         const centerY = 0.5;
         return {
           //x: centerX + (x - centerX) * HORIZONTAL_BOOST_FACTOR,
-          x: centerX + (centerX - x) * HORIZONTAL_BOOST_FACTOR.current,
-          y: centerY + (y - centerY) * VERTICAL_BOOST_FACTOR.current
+          x: centerX + (centerX - x) * HORIZONTAL_BOOST_FACTOR,
+          y: centerY + (y - centerY) * VERTICAL_BOOST_FACTOR
         };
       }
 
@@ -472,27 +450,6 @@ function App() {
   return (
     <div style={{ position: 'relative', width: '640px', height: '480px' }}>
       <audio id="clickSound" src="click.wav" preload="auto"></audio>
-      <div style={{display: 'flex', flexDirection: 'column', fontWeight: 'bold'}}>
-        <p>To Quit: Ctrl+Q</p>
-        <p>To Force Quit: Ctrl+Shift+Q</p>
-      </div>
-      <button onClick={() => {
-        window.electronAPI.toggleWindow();
-      }}>
-        hide window
-      </button>
-      <div style={{display: 'flex', flexDirection: 'column', fontWeight: 'bold', gap: '2px'}}>
-        <p>Smoothness :</p>
-      <button style={{width: '50px'}} onClick={() => {
-        setSMOOTHER(SMOOTHER+1)
-      }}>
-        +
-      </button>
-      <button style={{width: '50px'}} onClick={() => {
-        setSMOOTHER(SMOOTHER-1)
-      }}>
-        -
-      </button>
       </div>
       {/* Movable div that follows your hand */}
       <div
@@ -567,6 +524,27 @@ function App() {
           </>
         )}
       </div>
+        <div style={{display: 'flex', flexDirection: 'column', fontWeight: 'bold'}}>
+        <p>To Quit: Ctrl+Q</p>
+        <p>To Force Quit: Ctrl+Shift+Q</p>
+      </div>
+      <button onClick={() => {
+        window.electronAPI.toggleWindow();
+      }}>
+        hide window
+      </button>
+      <div style={{display: 'flex', flexDirection: 'column', fontWeight: 'bold', gap: '2px'}}>
+        <p>Smoothness :</p>
+      <button style={{width: '50px'}} onClick={() => {
+        setSMOOTHER(SMOOTHER+1)
+      }}>
+        +
+      </button>
+      <button style={{width: '50px'}} onClick={() => {
+        setSMOOTHER(SMOOTHER-1)
+      }}>
+        -
+      </button>
 
     </div>
   );
