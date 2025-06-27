@@ -153,7 +153,7 @@ function App() {
               //console.log("Not smoothing:", SMOOTHING_WINDOW);
             } else {
               //console.log("smoothing:", SMOOTHING_WINDOW);
-              SMOOTHING_WINDOW = 19 + SMOOTHER;
+              SMOOTHING_WINDOW = 25 + SMOOTHER;
             }
 
             const { x, y } = await mapHandToScreen(wrist.x, wrist.y, video)
