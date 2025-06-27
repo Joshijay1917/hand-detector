@@ -149,11 +149,11 @@ function App() {
             setLoading(false)
 
             if(distance > 50 && middle_distance > 50 && sendRef.current) {
-              SMOOTHING_WINDOW = 6 - SMOOTHER;
+              SMOOTHING_WINDOW = 11 - SMOOTHER;
               //console.log("Not smoothing:", SMOOTHING_WINDOW);
             } else {
               //console.log("smoothing:", SMOOTHING_WINDOW);
-              SMOOTHING_WINDOW = 14 + SMOOTHER;
+              SMOOTHING_WINDOW = 19 + SMOOTHER;
             }
 
             const { x, y } = await mapHandToScreen(wrist.x, wrist.y, video)
